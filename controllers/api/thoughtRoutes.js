@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { User, Thought } = require('../../models');
 const mongoose = require('mongoose');
 
+//route to get all thoughts
 router.get('/', async (req, res) => {
     try {
         const allThoughts = await Thought.find();
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
     }
 })
 
+//Route to get thoughts by ID
 router.get('/:thoughtId', async (req, res) => {
     try {
         const oneThought = await Thought.findOne({ _id: req.params.thoughtId });
@@ -24,6 +26,7 @@ router.get('/:thoughtId', async (req, res) => {
     }
 });
 
+//Route to create thoughts
 router.post('/', async (req, res) => {
     try {
         const newThought = await Thought.create(req.body);
@@ -42,6 +45,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+//Route to update thought
 router.put('/:thoughtId', async (req, res) => {
     try {
         const updateThought = await Thought.findOneAndUpdate(
@@ -57,6 +61,7 @@ router.put('/:thoughtId', async (req, res) => {
     }
 });
 
+//Route to detele thought
 router.delete('/:thoughtId', async (req, res) => {
     try {
         const deleteThought = await Thought.findByIdAndDelete(req.params.thoughtId);
@@ -68,18 +73,19 @@ router.delete('/:thoughtId', async (req, res) => {
     }
 });
 
+//Route to create a reaction for a thought
 router.post("/:thoughtId/reactions", async (req, res) => {
     try {
-      const thought = await Thought.findById(req.params.thoughtId);
+      const thought = await Thought.findById(req.params.thoughtId); //get thought ID
       if (!thought) {
         return res.status(400).json({ message: "No thought with that ID" });
       }
-      const newReactionId = new mongoose.Types.ObjectId();
+      const newReactionId = new mongoose.Types.ObjectId(); //creates ID for new reaction
       thought.reactions.push({
-        reactionId: newReactionId,
+        reactionId: newReactionId, //new reaction ID is pushed to reactionId in thoughts
         ...req.body,
       });
-      const newReaction = await thought.save();
+      const newReaction = await thought.save(); //new reaction is saved to thoughts
   
       return res.json(newReaction);
     } catch (err) {
@@ -87,23 +93,24 @@ router.post("/:thoughtId/reactions", async (req, res) => {
     }
   });
   
+  //Route to delete reaction from thought
   router.delete("/:thoughtId/reactions/:reactionId", async (req, res) => {
     try {
-      const thought = await Thought.findById(req.params.thoughtId);
+      const thought = await Thought.findById(req.params.thoughtId); //get thought ID
       if (!thought) {
         return res.status(400).json({ message: "No thought with that ID" });
       }
-      const reactionId = req.params.reactionId;
+      const reactionId = req.params.reactionId; //get reaction ID
       const reactionIndex = thought.reactions.findIndex(
         (reaction) => reaction.reactionId.toString() === reactionId
       );
   
-      if (reactionIndex === -1) {
+      if (reactionIndex === -1) { //-1 means that there is no reaction
         return res.status(400).json({ message: "No reaction with that ID" });
       }
   
-      thought.reactions.splice(reactionIndex, 1);
-      const updatedThought = await thought.save();
+      thought.reactions.splice(reactionIndex, 1); 
+      const updatedThought = await thought.save(); //new reaction is saved
   
       return res.json(updatedThought);
     } catch (err) {

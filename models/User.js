@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+//User schema is defined
 const userSchema = new Schema(
     {
         username: {
@@ -13,7 +14,7 @@ const userSchema = new Schema(
             type: String,
             unique: true,
             required: true,
-            match: [/.+\@.+\..+/, 'Please enter a valid email address'],
+            match: [/.+\@.+\..+/, 'Please enter a valid email address'], //validate email
         },
 
         thoughts: [

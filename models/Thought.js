@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+//Reaction schema is defined
 const reactionSchema = new Schema(
     {
       reactionId: {
@@ -39,6 +40,7 @@ const reactionSchema = new Schema(
     }
   );
 
+  //Thought schema defined
   const thoughtSchema = new Schema(
     {
         thoughtText: {
