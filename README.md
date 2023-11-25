@@ -8,7 +8,6 @@
   - [Description](#description)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Credits](#credits)
   - [License](#license)
   - [Contributing](#contributing)
   - [Test](#tests)
